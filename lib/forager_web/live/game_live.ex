@@ -7,7 +7,7 @@ defmodule ForagerWeb.GameLive do
     if connected?(socket), do: Process.send_after(self(), :update, 3000)
 
     w = 15
-    h = 11
+    h = 9
 
     p1 =
       Player.new("dog") |> Map.put(:brain, Brain.from_elixir(Scripts.get("nearest_walker.lua")))
@@ -25,7 +25,7 @@ defmodule ForagerWeb.GameLive do
         %{x: i * 16, y: j * 16, v: get_grass_variant(8)}
       end
 
-    {:ok, assign(socket, grass_tiles: grass_tiles, game: game)}
+    {:ok, assign(socket, grass_tiles: grass_tiles, game: game, height: game.height)}
   end
 
   # def update(assigns, socket) do
@@ -37,20 +37,20 @@ defmodule ForagerWeb.GameLive do
     ceil(:rand.uniform() * :rand.uniform() * max)
   end
 
-  @spec render(any) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div style="transform-origin: top left; position: relative; scale: 5; width: 880px; height: 880px; image-rendering: pixelated;">
-      <%= for tile <- @grass_tiles do %>
+    <div style="transform-origin: top left; position: relative; scale: 5; width: 240px; height: 144px; image-rendering: pixelated;">
+    <div style="width: #{@game.width}px; height: #{@height}px"></div>
+    <%= for tile <- @grass_tiles do %>
         <div style={"position: absolute; left: #{tile.x}px; top: #{tile.y}px"}>
           <img src={"/images/g#{tile.v}.png"} height="16" width="16" />
         </div>
       <% end %>
-      
+
       <%= for fruit <- @game.fruits do %>
         <.fruit fruit={fruit} />
       <% end %>
-      
+
       <%= for player <- @game.players do %>
         <.player player={player} />
       <% end %>
