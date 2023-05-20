@@ -50,7 +50,7 @@ defmodule Forager.Worker do
     end
   end
 
-  def receive_response(pid, timeout) do
+  defp receive_response(pid, timeout) do
     receive do
       {^pid, reply} ->
         reply
@@ -63,4 +63,5 @@ defmodule Forager.Worker do
         {:error, :timeout}
     end
   end
+
 end

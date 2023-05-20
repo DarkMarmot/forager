@@ -1,4 +1,4 @@
-defmodule Sandbox do
+defmodule Forager.Sandbox do
   alias Forager.Worker
 
   @luerl_global :_G

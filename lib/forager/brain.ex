@@ -1,5 +1,5 @@
 defmodule Forager.Brain do
-  alias Forager.Scripts
+  alias Forager.{Sandbox, Scripts}
 
   def from_elixir(script) do
     Sandbox.init()

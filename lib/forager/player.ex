@@ -1,5 +1,5 @@
 defmodule Forager.Player do
-  alias Forager.Player
+  alias Forager.{Player, Sandbox}
 
    defstruct id: 0,
             x: 0,
