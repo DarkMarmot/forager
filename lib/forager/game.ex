@@ -114,9 +114,7 @@ defmodule Forager.Game do
         case scores_by_player_id[p.id] do
           nil ->
             p
-
           score ->
-            IO.puts("#{p.name} scores #{score}")
             %Player{p | score: p.score + score}
         end
       end)

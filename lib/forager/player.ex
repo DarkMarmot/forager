@@ -9,7 +9,7 @@ defmodule Forager.Player do
             moves_by_round: %{},
             score: 0,
             round: 0,
-            current_action: ""
+            current_action: "pass"
 
   def new(name) do
     %Player{name: name}
@@ -60,7 +60,6 @@ defmodule Forager.Player do
       {:ok, %{result: [move]}} -> move
       {:error, _} -> "pass"
     end
-
   end
 
   def to_view(player) when is_list(player) do

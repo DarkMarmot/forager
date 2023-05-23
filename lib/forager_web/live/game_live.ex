@@ -14,10 +14,10 @@ defmodule ForagerWeb.GameLive do
     h = 9
 
     p1 =
-      Player.new("dog") |> Map.put(:brain, Brain.from_elixir(Scripts.get("nearest_walker.lua")))
+      Player.new("Boar") |> Map.put(:brain, Brain.from_elixir(Scripts.get("nearest_walker.lua")))
 
     p2 =
-      Player.new("cat") |> Map.put(:brain, Brain.from_elixir(Scripts.get("biggest_walker.lua")))
+      Player.new("Coyote") |> Map.put(:brain, Brain.from_elixir(Scripts.get("biggest_walker.lua")))
 
     game =
       Game.new(w, h)
@@ -32,11 +32,6 @@ defmodule ForagerWeb.GameLive do
     {:ok, assign(socket, active: false, grass_tiles: grass_tiles, game: game)}
   end
 
-  # def update(assigns, socket) do
-  #   game = assigns.game
-  #   {:ok, assign(socket, fruits: fruits)}
-  # end
-
   defp get_grass_variant(max) do
     ceil(:rand.uniform() * :rand.uniform() * max)
   end
@@ -44,6 +39,13 @@ defmodule ForagerWeb.GameLive do
   def render(assigns) do
 
     ~H"""
+    <div style="display: flex; padding: 50px; flex-direction: column; ">
+    <div style={"width: #{@game.width * 80 + 20}px; display: flex; justify-content: space-between; padding: 10px"}>
+    <%= for player <- @game.players do %>
+    <.player_stats player={player} />
+    <% end %>
+  </div>
+
     <div style={"padding: 10px; width: #{@game.width * 80 + 20}px; height: #{@game.height * 80 + 20}px;"}>
     <div style={"transform-origin: top left;position: relative; scale: 5; width: #{@game.width * 16}px; height: #{@game.height * 16}px; image-rendering: pixelated;"}>
 
@@ -62,6 +64,12 @@ defmodule ForagerWeb.GameLive do
       <% end %>
     </div>
     </div>
+
+      <div style={"justify-content: center; display: flex; padding: 5px; width: #{@game.width * 80 + 20}px;"}>
+        <div style="font-size: 40px; color: white;">Round <%= @game.round %></div>
+      </div>
+
+    </div>
     """
   end
 
@@ -77,6 +85,16 @@ defmodule ForagerWeb.GameLive do
     ~H"""
     <div style={"z-index: #{@player.id}; position: absolute; transform: scaleX(1); left: #{@player.x * 16 -8 + @player.id * 2}px; top: #{@player.y * 16 -18 + @player.id * 3}px"}>
       <img src={"/images/p#{@player.id}_#{get_action_display(@player.current_action)}.gif"} height="32" width="32" />
+    </div>
+    """
+  end
+
+  def player_stats(assigns) do
+    ~H"""
+
+    <div style="display: flex; flex-direction: column; font-size: 30px; color: white;">
+    <div><%= @player.name %>: <%= @player.score %></div>
+    <div><%= @player.current_action %></div>
     </div>
     """
   end
